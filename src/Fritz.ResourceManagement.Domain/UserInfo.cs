@@ -11,5 +11,7 @@ namespace Fritz.ResourceManagement.Domain
 
     public string Name { get; set; }
 
-  }
+		public int ScheduleId { get; set; }
+
+	}
 }

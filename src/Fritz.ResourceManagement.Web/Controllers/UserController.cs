@@ -20,8 +20,13 @@ namespace Fritz.ResourceManagement.Web.Controllers
     [HttpGet("user")]
     public UserInfo GetUser()
     {
-      return User.Identity.IsAuthenticated
-          ? new UserInfo { Name = User.Identity.Name, IsAuthenticated = true }
+
+			// Cheer 1500 clintonrocksmith 30/07/19 
+
+			// TODO: Fetch the schedule id appropriately
+
+			return User.Identity.IsAuthenticated
+					? new UserInfo { Name = User.Identity.Name, IsAuthenticated = true, ScheduleId = User.GetClaimValueAsInt(Data.MyUser.Claims.SCHEDULEID).Value }
           : _LoggedOutUser;
     }
 

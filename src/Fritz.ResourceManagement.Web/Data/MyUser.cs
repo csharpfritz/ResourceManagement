@@ -2,17 +2,21 @@
 
 namespace Fritz.ResourceManagement.Web.Data
 {
-  public class MyUser : IdentityUser
-  {
-
-	public int? PersonId { get; set; }
-
-	public static class Claims
+	public class MyUser : IdentityUser
 	{
 
-	  public const string PERSONID = "personid";
+		public int? PersonId { get; set; }
+
+		public int? ScheduleId { get; set; }
+
+		public static class Claims
+		{
+
+			public const string PERSONID = "personid";
+
+			public const string SCHEDULEID = "scheduleid";
+
+		}
 
 	}
-
-  }
 }

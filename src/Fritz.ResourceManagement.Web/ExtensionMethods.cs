@@ -14,8 +14,15 @@ namespace Fritz.ResourceManagement.Web
 		public static int? GetPersonId(this System.Security.Claims.ClaimsPrincipal claimsPrincipal)
 		{
 
+			return claimsPrincipal.GetClaimValueAsInt(Data.MyUser.Claims.PERSONID);
+
+		}
+
+		public static int? GetClaimValueAsInt(this System.Security.Claims.ClaimsPrincipal claimsPrincipal, string claimName)
+		{
+
 			var outValue = claimsPrincipal.Claims
-				.First(c => c.Type == Data.MyUser.Claims.PERSONID)?.Value;
+				.First(c => c.Type == claimName)?.Value;
 
 			if (string.IsNullOrEmpty(outValue)) return null;
 
