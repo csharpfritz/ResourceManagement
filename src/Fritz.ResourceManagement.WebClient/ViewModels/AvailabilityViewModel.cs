@@ -76,10 +76,30 @@ namespace Fritz.ResourceManagement.WebClient.ViewModels
 
 		public async Task<IEnumerable<ValidationResult>> AddNewRecurringSchedule()
 		{
+
 			// Cheer 2000 organicIT 23/06/19
 
 			var results = NewRecurringSchedule.Validate(null);
-			if (results.Any()) return results;
+			if (results.Any())
+			{
+				Console.WriteLine($"Failed validation with {results.Count()} errors");
+				Console.WriteLine($"CronPattern: {NewRecurringSchedule.CronPattern}");
+
+				// Cheer 100 thehugodahl 21/8/19 
+				// Cheer 200 nothing_else_matters 20/8/19 
+				// Cheer 350 kizzyiee 20/8/19 
+				// Cheer 500 crowz4k 20/8/19 
+				// Cheer 100 ashkeravon 21/8/19 
+				// Cheer 100 kasuken 21/8/19 
+
+				foreach (var validationResult in results)
+				{
+					Console.WriteLine(validationResult.ErrorMessage);
+				}
+
+				return results;
+			}
+			Console.WriteLine("Attempting to write the schedule to the database");
 			await ScheduleRepository.AddNewRecurringSchedule(this.MySchedule, NewRecurringSchedule);
 
 			this.MyScheduleState.ScheduleUpdated();

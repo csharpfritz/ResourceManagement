@@ -4,15 +4,15 @@
 <input class="form-control appointment-name" type="text" name="Name" @bind="this.Schedule.Name" placeholder="Name of the Recurring Appointment" />
 
 <label for="StartDate" class="col-sm-4">Start Date:</label>
-<input class="form-control col-sm-8" type="date" id="StartDate" @bind-value="this.Schedule.MinStartDateTime" @bind-value:format="yyyy-MM-dd" />
+<InputDate class="form-control col-sm-8" id="StartDate" @bind-Value="this.Schedule.MinStartDateTime" />
 <label for="EndDate" class="col-sm-4">End Date:</label>
-<input class="form-control col-sm-8" type="date" id="EndDate" @bind-value="this.Schedule.MaxEndDateTime" @bind-value:format="yyyy-MM-dd" />
+<InputDate class="form-control col-sm-8" id="EndDate" @bind-Value="this.Schedule.MaxEndDateTime" />
 
 <label for="StartTime" class="col-sm-4">Start Time:</label>
-<input class="form-control col-sm-8" type="time" id="StartTime" @bind-value="this.TimeOfDay"  @bind-value:event="TimeChanged"/>
+<TimeInput class="form-control col-sm-8" id="StartTime" @bind-Value="this.StartTime"  @bind-Value:event="@TimeChanged" @bind-Value:format="HH:mm" />
 
 <label for="EndTime" class="col-sm-4">Ending Time:</label>
-<input class="form-control col-sm-8" type="time" id="EndTime" @bind-value="this.EndTime" @bind-value:event="TimeChanged" />
+<TimeInput class="form-control col-sm-8" id="EndTime" @bind-Value="this.EndTime" @bind-Value:event="@TimeChanged" @bind-Value:format="HH:mm" />
 
 <fieldset>
 	<legend>Recurrence</legend>

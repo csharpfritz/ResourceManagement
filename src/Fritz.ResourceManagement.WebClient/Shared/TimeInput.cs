@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.RenderTree;
@@ -13,21 +10,21 @@ namespace Fritz.ResourceManagement.WebClient.Shared
 	/// An input component for editing date values.
 	/// Supported types are <see cref="DateTime"/> and <see cref="DateTimeOffset"/>.
 	/// </summary>
-	public class DateTimeInput<TValue> : InputBase<TValue>
+	public class TimeInput<TValue> : InputBase<TValue>
 	{
-		private const string DateFormat = "yyyy-MM-ddTHH:mm"; // Compatible with HTML date inputs
-
 		/// <summary>
 		/// Gets or sets the error message used when displaying an a parsing error.
 		/// </summary>
 		[Parameter] public string ParsingErrorMessage { get; set; } = "The {0} field must be a date.";
+
+		private const string DateFormat = "HH:mm";
 
 		/// <inheritdoc />
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
 			builder.OpenElement(0, "input");
 			builder.AddMultipleAttributes(1, AdditionalAttributes);
-			builder.AddAttribute(2, "type", "datetime-local");
+			builder.AddAttribute(2, "type", "time");
 			builder.AddAttribute(3, "class", CssClass);
 			builder.AddAttribute(4, "value", BindConverter.FormatValue(CurrentValueAsString));
 			builder.AddAttribute(5, "onchange", EventCallback.Factory.CreateBinder<string>(this, __value => CurrentValueAsString = __value, CurrentValueAsString));
@@ -37,6 +34,7 @@ namespace Fritz.ResourceManagement.WebClient.Shared
 		/// <inheritdoc />
 		protected override string FormatValueAsString(TValue value)
 		{
+
 			switch (value)
 			{
 				case DateTime dateTimeValue:
@@ -54,6 +52,9 @@ namespace Fritz.ResourceManagement.WebClient.Shared
 			// Unwrap nullable types. We don't have to deal with receiving empty values for nullable
 			// types here, because the underlying InputBase already covers that.
 			var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+
+			Console.WriteLine("Raw value: " + value);
+
 
 			bool success;
 			if (targetType == typeof(DateTime))
@@ -83,9 +84,15 @@ namespace Fritz.ResourceManagement.WebClient.Shared
 
 		static bool TryParseDateTime(string value, out TValue result)
 		{
+
+			Console.WriteLine($"DateFormat: {DateFormat}");
+
 			var success = BindConverter.TryConvertToDateTime(value, CultureInfo.InvariantCulture, DateFormat, out var parsedValue);
 			if (success)
 			{
+
+				Console.WriteLine($"Parsed DateTime: {parsedValue}");
+
 				result = (TValue)(object)parsedValue;
 				return true;
 			}
@@ -98,6 +105,7 @@ namespace Fritz.ResourceManagement.WebClient.Shared
 
 		static bool TryParseDateTimeOffset(string value, out TValue result)
 		{
+
 			var success = BindConverter.TryConvertToDateTimeOffset(value, CultureInfo.InvariantCulture, DateFormat, out var parsedValue);
 			if (success)
 			{

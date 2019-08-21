@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
+using CronEspresso.NETCore;
 using Fritz.ResourceManagement.Domain;
 using Microsoft.AspNetCore.Components;
 
@@ -20,11 +22,11 @@ namespace Fritz.ResourceManagement.WebClient.ViewModels
 
 		public string Pattern { get; set; }
 
-		public TimeSpan TimeOfDay { get; set; }
+		public DateTime StartTime { get; set; }
 
 		public HashSet<string> DaysOfTheWeek { get; set; } = new HashSet<string>();
 
-		public TimeSpan EndTime { get; set; }
+		public DateTime EndTime { get; set; }
 		
 		public void OnDOWChange(string day)
 		{
@@ -51,33 +53,41 @@ namespace Fritz.ResourceManagement.WebClient.ViewModels
 		public async Task TimeChanged(UIChangeEventArgs args)
 		{
 			// TODO: Simon G - This was pulled in from the Code block in RecurrenceDataEntry.razor but does not appear to be called is it still needed?
-			if (EndTime != null)
+			if (EndTime == null)
 				return;
 
-			if (this.TimeOfDay > EndTime)
+			if (this.StartTime > EndTime)
 			{
 				this.EndTime = this.EndTime.Add(TimeSpan.FromDays(1));
 			}
-			this.Schedule.Duration = this.EndTime.Subtract(this.TimeOfDay);
+			this.Schedule.Duration = this.EndTime.TimeOfDay.Subtract(this.StartTime.TimeOfDay);
 		}
 		
 		private string CalculatedCronPattern()
 		{
-			var sb = new System.Text.StringBuilder();
 
-			sb.Append($"{this.TimeOfDay.Minutes} ");
-			sb.Append($"{this.TimeOfDay.Hours} ");
-			sb.Append("* * ");
+			Console.WriteLine($"StartTime: {StartTime} EndTime: {EndTime}");
+
+			if (this.StartTime > EndTime)
+			{
+				this.EndTime = this.EndTime.Add(TimeSpan.FromDays(1));
+			}
+			this.Schedule.Duration = this.EndTime.TimeOfDay.Subtract(this.StartTime.TimeOfDay);
+
+			var outPattern = "";
 
 			if (this.Pattern == "D" || !this.DaysOfTheWeek.Any())
 			{
-				sb.Append("*");
+				outPattern = CronGenerator.GenerateDailyCronExpression(StartTime.TimeOfDay);
 			}
 			else
 			{
-				sb.Append(string.Join(",", this.DaysOfTheWeek.ToArray()));
+				var dowList = DaysOfTheWeek.Select(d => (DayOfWeek)Enum.Parse(typeof(DayOfWeek), d)).ToList();
+				outPattern = CronGenerator.GenerateMultiDayCronExpression(StartTime.TimeOfDay, dowList);
 			}
-			return sb.ToString();
+
+			return outPattern;
+
 		}
 	}
 }
