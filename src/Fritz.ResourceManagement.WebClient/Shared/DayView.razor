@@ -31,14 +31,11 @@
 
 	@if (this.MyScheduleState != null && this.MyScheduleState.TimeSlots != null)
 	{
-		foreach (var item in this.MyScheduleState.TimeSlots.Where(s => s.StartDateTime.Date == this.SelectedDate.Date))
+		foreach (var item in this.MyScheduleState.TimeSlots.Where(s => DisplayItem(s.StartDateTime, s.EndDateTime)))
 		{
-			if (this.DisplayItem(item.StartDateTime, item.EndDateTime))
-			{
-				<span class="scheduleItem @this.ItemBorderStyle(item.StartDateTime, item.EndDateTime)" style="grid-row-start: @this.ItemStartRow(item.StartDateTime); top: @this.ItemTopPosition(item.StartDateTime); height: @this.ItemRowHeight(item.StartDateTime, item.EndDateTime);">
-					@item.Name  - @item.StartDateTime.ToShortTimeString()
-				</span>
-			}
+			<span class="scheduleItem @this.ItemBorderStyle(item.StartDateTime, item.EndDateTime)" style="grid-row-start: @this.ItemStartRow(item.StartDateTime); top: @this.ItemTopPosition(item.StartDateTime); height: @this.ItemRowHeight(item.StartDateTime, item.EndDateTime);">
+				@item.Name  - @item.StartDateTime.ToShortTimeString()
+			</span>
 		}
 	}
 

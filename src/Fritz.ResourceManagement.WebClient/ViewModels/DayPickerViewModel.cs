@@ -13,6 +13,10 @@ namespace Fritz.ResourceManagement.WebClient.ViewModels
 		protected override void OnInitialized()
 		{
 			Console.WriteLine($"MyScheduleState: {MyScheduleState.GetHashCode()}");
+			MyScheduleState.OnTimeSlotsChanged += (o, a) =>
+			{
+				this.StateHasChanged();
+			};
 			base.OnInitialized();
 		}
 

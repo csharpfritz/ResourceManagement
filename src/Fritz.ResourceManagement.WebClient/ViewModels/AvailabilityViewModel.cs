@@ -65,9 +65,12 @@ namespace Fritz.ResourceManagement.WebClient.ViewModels
 			// Cheer 5000 fixterjake 01/08/19 
 			// Cheer 500 cpayette 08/08/19 
 
-			var fetchedTimeslots = await ScheduleRepository.FetchTimeSlots(MySchedule.Id);
-			Console.WriteLine($"Fetched {fetchedTimeslots.Length} timeslots");
-			MyScheduleState.TimeSlots.AddRange(fetchedTimeslots);
+			var fetchedTimeslots = (await ScheduleRepository.FetchTimeSlots(MySchedule.Id)).ToList();
+			Console.WriteLine($"Fetched {fetchedTimeslots.Count()} timeslots");
+
+			fetchedTimeslots.Add(new TimeSlot() { Name="Test Timeslot", StartDateTime=new DateTime(2019, 8, 10, 16,0,0), EndDateTime=new DateTime(2019, 8, 10, 17,0,0), Status=ScheduleStatus.Available  });
+
+			MyScheduleState.SetTimeSlots(fetchedTimeslots);
 			Console.WriteLine($"MyScheduleState: {MyScheduleState.GetHashCode()}");
 		}
 
@@ -93,11 +96,14 @@ namespace Fritz.ResourceManagement.WebClient.ViewModels
 
 			NewScheduleItem.Status = ScheduleStatus.NotAvailable;
 
+			Console.WriteLine($"StartDateTime: {NewScheduleItem.StartDateTime} EndDateTime: {NewScheduleItem.EndDateTime}");
+
 			var results = this.NewScheduleItem.Validate(null); // <<-- That's not right...
 			if (results.Any()) return results;
 
 			await ScheduleRepository.AddNewScheduleItem(MySchedule, NewScheduleItem);
 
+			await ExpandSchedule();
 			this.MyScheduleState.ScheduleUpdated();
 
 			this.ResetScheduleItem();

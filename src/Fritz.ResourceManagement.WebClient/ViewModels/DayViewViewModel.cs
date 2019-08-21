@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Fritz.ResourceManagement.Domain;
 using Microsoft.AspNetCore.Components;
 
@@ -141,15 +142,21 @@ namespace Fritz.ResourceManagement.WebClient.ViewModels
 		}
 
 		// Cheer 142 cpayette 15/8/19 
-		protected override void OnParametersSet()
+		protected override async Task OnInitializedAsync()
 		{
+
 			MyScheduleState.OnSelectedDateChanged += (obj, args) =>
 			{
 				this.StateHasChanged();
 			};
 
-			this.StateHasChanged();
-			base.OnParametersSet();
+			MyScheduleState.OnTimeSlotsChanged += (o, a) =>
+			{
+				this.StateHasChanged();
+			};
+
+			await base.OnInitializedAsync();
+
 		}
 	}
 }

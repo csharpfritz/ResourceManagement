@@ -1,6 +1,7 @@
 @page "/availability"
 @attribute [Authorize]
 @using Tabs = ViewModels.AvailabilityViewModel.Tabs
+@using Fritz.ResourceManagement.WebClient.Shared
 @inherits ViewModels.AvailabilityViewModel
 
 
@@ -33,10 +34,10 @@
 				<label for="scheduled-appointment-name" class="appointment-name-label">Appointment Name: </label>
 				<input class="form-control appointment-name" type="text" name="Name" id="scheduled-appointment-name" @bind="this.NewScheduleItem.Name" placeholder="Name of the Appointment" />
 				<label class="label1" for="scheduled-appointment-start-time">Start Time:</label>
-				<DateTimeInput class="form-control startTime" Value="this.NewScheduleItem.StartDateTime" id="scheduled-appointment-start-time"></DateTimeInput>
+				<DateTimeInput class="form-control startTime" @bind-Value="this.NewScheduleItem.StartDateTime" id="scheduled-appointment-start-time"></DateTimeInput>
 
 				<label class="label2" for="scheduled-appointment-end-time">End Time:</label>
-				<DateTimeInput class="form-control endTime" Value="this.NewScheduleItem.EndDateTime" id="scheduled-appointment-end-time"></DateTimeInput>
+				<DateTimeInput class="form-control endTime" @bind-Value="this.NewScheduleItem.EndDateTime" id="scheduled-appointment-end-time"></DateTimeInput>
 
 				<div class="foot">
 					<button class="schedule-item-button btn btn-primary" @onclick="() => this.AddNewScheduleItem()">Add New Schedule Item</button>

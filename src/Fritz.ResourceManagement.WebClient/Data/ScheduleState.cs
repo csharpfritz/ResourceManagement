@@ -28,6 +28,15 @@ namespace Fritz.ResourceManagement.WebClient.Data
 
 		public List<TimeSlot> TimeSlots { get; } = new List<TimeSlot>();
 
+		public void SetTimeSlots(IEnumerable<TimeSlot> newTimeSlots) {
+
+			TimeSlots.Clear();
+			TimeSlots.AddRange(newTimeSlots);
+
+			OnTimeSlotsChanged?.Invoke(null, new TimeSlotsChangedArgs());
+					 
+		}
+
 		public void ScheduleUpdated()
 		{
 			ExpandSchedule();
@@ -53,10 +62,17 @@ namespace Fritz.ResourceManagement.WebClient.Data
 
 		public event EventHandler<SelectedDateChangedArgs> OnSelectedDateChanged;
 
+		public event EventHandler<TimeSlotsChangedArgs> OnTimeSlotsChanged;
+
 		public class SelectedDateChangedArgs : EventArgs
 		{
 
 			public DateTime SelectedDate { get; set; }
+
+		}
+
+		public class TimeSlotsChangedArgs
+		{
 
 		}
 
