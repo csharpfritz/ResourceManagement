@@ -55,5 +55,6 @@ namespace Fritz.ResourceManagement.WebClient.ViewModels
 
 			//this.Schedules = await HttpClient.GetJsonAsync<Schedule[]>($"api/schedule/forrange/{this.MyScheduleState.DisplayBeginDate.ToShortDateString()}/{this.MyScheduleState.DisplayEndDate.ToShortDateString()}");
 		}
+
 	}
 }

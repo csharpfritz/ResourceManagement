@@ -46,6 +46,5 @@ namespace Fritz.ResourceManagement.Web.Controllers
 
 		}
 
-
 	}
 }

@@ -76,9 +76,9 @@ namespace Fritz.ResourceManagement.WebClient.ViewModels
 
 			if (start <= startDayView)
 			{
-				return 1;
+				return 1 + (DayDisplay ? 1 : 0);
 			}
-			return (start.Hour - this.DayViewStart.Hour) + 1;
+			return (start.Hour - this.DayViewStart.Hour) + 1 + (DayDisplay ? 1 : 0);
 		}
 
 		public string ItemTopPosition(DateTime start)

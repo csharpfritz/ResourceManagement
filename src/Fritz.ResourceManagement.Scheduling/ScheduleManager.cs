@@ -33,6 +33,16 @@ namespace Fritz.ResourceManagement.Scheduling
 
 		}
 
+		/// <summary>
+		/// Calculate the total availability across schedules for the date range selected
+		/// </summary>
+		/// <param name="mySchedules"></param>
+		/// <param name="startDate"></param>
+		/// <param name="endDate"></param>
+		/// <param name="startHour"></param>
+		/// <param name="endHour"></param>
+		/// <param name="grain"></param>
+		/// <returns></returns>
 		public IEnumerable<TimeSlotAvailability> CalculateAvailability(List<Schedule> mySchedules, DateTime startDate, DateTime endDate, byte startHour, byte endHour, AvailabilityTimeUnit grain)
 		{
 
